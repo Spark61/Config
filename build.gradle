@@ -1,0 +1,40 @@
+apply plugin: 'java'
+
+configurations {
+    providedRuntime
+}
+
+sourceCompatibility = 15
+targetCompatibility = 15
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral();
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:19.0.0'
+    compile('com.google.code.gson:gson:2.8.6')
+    compile group: 'com.google.guava', name: 'guava', version: '29.0-jre'
+    compile('commons-io:commons-io:2.7')
+}
+
+group = 'de.spark61'
+version = '1.0.1'
+
+jar {
+    enabled = true
+    baseName("Config")
+    version(project.version)
+
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+
+    manifest {
+        attributes["Implimentation-Title"] = project.name
+    }
+}
