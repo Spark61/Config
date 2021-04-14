@@ -4,8 +4,8 @@ configurations {
     providedRuntime
 }
 
-sourceCompatibility = 15
-targetCompatibility = 15
+sourceCompatibility = 8
+targetCompatibility = 8
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
