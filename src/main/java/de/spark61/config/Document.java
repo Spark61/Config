@@ -102,6 +102,12 @@ public class Document {
         return new DocumentArray(this.jsonObject.get(key).getAsJsonArray());
     }
 
+    public DocumentArray getDocumentArray(@NotNull final String key, final DocumentArray defaultValue) {
+        final DocumentArray documentArray = this.getDocumentArray(key);
+
+        return documentArray == null ? defaultValue : documentArray;
+    }
+
     public JsonArray getJsonArray(@NotNull final String key) {
         if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
             return null;

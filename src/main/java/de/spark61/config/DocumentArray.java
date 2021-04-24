@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
@@ -48,6 +49,16 @@ public class DocumentArray implements Iterable<JsonElement> {
         return this.jsonArray.get(i);
     }
 
+    public @NotNull DocumentArray add(@NotNull final Integer value) {
+        this.jsonArray.add(new JsonPrimitive(value));
+        return this;
+    }
+
+    public @NotNull DocumentArray add(@NotNull final Long value) {
+        this.jsonArray.add(new JsonPrimitive(value));
+        return this;
+    }
+
     public DocumentArray add(@NotNull final Boolean value) {
         this.jsonArray.add(value);
         return this;
@@ -65,6 +76,11 @@ public class DocumentArray implements Iterable<JsonElement> {
 
     public DocumentArray add(@NotNull final Document value) {
         this.jsonArray.add(value.getJsonObject());
+        return this;
+    }
+
+    public @NotNull DocumentArray add(@NotNull final DocumentArray value) {
+        this.jsonArray.add(value.getJsonArray());
         return this;
     }
 
@@ -98,7 +114,7 @@ public class DocumentArray implements Iterable<JsonElement> {
 
     public DocumentArray remove(@NotNull final Integer index) {
         this.jsonArray.remove(index);
-
+        
         return this;
     }
 
@@ -109,12 +125,12 @@ public class DocumentArray implements Iterable<JsonElement> {
     }
 
     public DocumentArray remove(@NotNull final Boolean value) {
-        this.jsonArray.remove(Document.GSON.toJsonTree(value));
+        this.jsonArray.remove(new JsonPrimitive(value));
         return this;
     }
 
     public DocumentArray remove(@NotNull final String value) {
-        this.jsonArray.remove(Document.GSON.toJsonTree(value));
+        this.jsonArray.remove(new JsonPrimitive(value));
         return this;
     }
 
@@ -138,26 +154,50 @@ public class DocumentArray implements Iterable<JsonElement> {
         return this;
     }
 
+    public DocumentArray set(@NotNull final Integer index, @NotNull final Document value) {
+        this.jsonArray.set(index, value.getJsonObject());
+
+        return this;
+    }
+
+    public DocumentArray set(@NotNull final Integer index, @NotNull final DocumentArray value) {
+        this.jsonArray.set(index, value.getJsonArray());
+
+        return this;
+    }
+
+    public DocumentArray set(@NotNull final Integer index, @NotNull final Integer value) {
+        this.jsonArray.set(index, new JsonPrimitive(value));
+
+        return this;
+    }
+
+    public DocumentArray set(@NotNull final Integer index, @NotNull final Long value) {
+        this.jsonArray.set(index, new JsonPrimitive(value));
+
+        return this;
+    }
+    
     public DocumentArray set(@NotNull final Integer index, @NotNull final Boolean value) {
-        this.jsonArray.set(index, Document.GSON.toJsonTree(value));
+        this.jsonArray.set(index, new JsonPrimitive(value));
 
         return this;
     }
 
     public DocumentArray set(@NotNull final Integer index, @NotNull final String value) {
-        this.jsonArray.set(index, Document.GSON.toJsonTree(value));
+        this.jsonArray.set(index, new JsonPrimitive(value));
 
         return this;
     }
 
     public DocumentArray set(@NotNull final Integer index, @NotNull final Number value) {
-        this.jsonArray.set(index, Document.GSON.toJsonTree(value));
+        this.jsonArray.set(index, new JsonPrimitive(value));
 
         return this;
     }
 
     public DocumentArray set(@NotNull final Integer index, @NotNull final Character value) {
-        this.jsonArray.set(index, Document.GSON.toJsonTree(value));
+        this.jsonArray.set(index, new JsonPrimitive(value));
 
         return this;
     }
