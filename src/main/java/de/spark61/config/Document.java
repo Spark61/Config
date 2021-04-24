@@ -33,6 +33,11 @@ public class Document {
         this.jsonObject = new JsonObject();
     }
 
+    public Document(@NotNull final String key, final Object value) {
+        this.jsonObject = new JsonObject();
+        this.jsonObject.add(key, Document.GSON.toJsonTree(value));
+    }
+
     public Document(@NotNull final JsonElement jsonElement) {
         this.jsonObject = jsonElement.getAsJsonObject();
     }
