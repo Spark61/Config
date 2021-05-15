@@ -1,4 +1,5 @@
 ## Config
+[![Code](https://tokei.rs/b1/github/Spark61/Config?category=code)](https://github.com/Spark61/Config)
 
 ### Usage of Config
 
