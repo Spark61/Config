@@ -42,6 +42,12 @@ public class Document {
         this.jsonObject = jsonElement.getAsJsonObject();
     }
 
+    public Document clear(){
+        entrySet().forEach(stringJsonElementEntry -> remove(stringJsonElementEntry.getKey()));
+
+        return this;
+    }
+
     public <T> T getObject(@NotNull final String key, @NotNull final Class<T> classOfT) {
         if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
             return null;

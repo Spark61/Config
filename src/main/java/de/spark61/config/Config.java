@@ -13,6 +13,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +21,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class Config extends Document {
-
     private final String path;
     private final boolean readOnly;
 
@@ -41,17 +41,24 @@ public class Config extends Document {
         this.path = null;
     }
 
-    private Config(@NotNull final Document document) {
+    public Config(@NotNull final Document document) {
         super(document.toString());
         this.readOnly = true;
         this.path = null;
+    }
+
+    @Override
+    public Config clear() {
+        super.clear();
+
+        return this;
     }
 
     public boolean isReadOnly() {
         return this.readOnly;
     }
 
-    public void save() {
+    public Config save() {
         if (this.isReadOnly()) {
             try {
                 throw new IOException("Can't write in file");
@@ -69,9 +76,24 @@ public class Config extends Document {
         } catch (final IOException e) {
             e.printStackTrace();
         }
+
+        return this;
     }
 
-    public void reload() {
+    public Config delete() throws IOException {
+        if (this.isReadOnly()) {
+            try {
+                throw new IOException("Can't delete file");
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+
+        FileUtils.forceDelete(new File(path));
+        return clear();
+    }
+
+    public Config reload() {
         try {
             final JsonElement jsonElement = JsonParser.parseReader(new FileReader(this.path));
 
@@ -84,6 +106,8 @@ public class Config extends Document {
             super.setJsonObject(new JsonObject());
             this.save();
         }
+
+        return this;
     }
 
     @Override
