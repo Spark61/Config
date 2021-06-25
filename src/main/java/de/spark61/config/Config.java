@@ -36,7 +36,7 @@ public class Config extends Document {
     }
 
     public Config(@NotNull final InputStream inputStream) throws IOException {
-        super(IOUtils.toString(inputStream, StandardCharsets.UTF_8));
+        super(inputStream);
         this.readOnly = true;
         this.path = null;
     }

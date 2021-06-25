@@ -10,9 +10,13 @@
 package de.spark61.config;
 
 import com.google.gson.*;
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,6 +40,9 @@ public class Document {
     public Document(@NotNull final String key, final Object value) {
         this.jsonObject = new JsonObject();
         this.jsonObject.add(key, Document.GSON.toJsonTree(value));
+    }
+    public Document(@NotNull final InputStream inputStream) throws IOException {
+        this(IOUtils.toString(inputStream, StandardCharsets.UTF_8));
     }
 
     public Document(@NotNull final JsonElement jsonElement) {
