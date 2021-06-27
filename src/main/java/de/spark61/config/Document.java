@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class Document {
-
     public final static Gson GSON = new GsonBuilder().serializeNulls().setPrettyPrinting().disableHtmlEscaping().create();
     private JsonObject jsonObject;
 
@@ -39,8 +38,9 @@ public class Document {
 
     public Document(@NotNull final String key, final Object value) {
         this.jsonObject = new JsonObject();
-        this.jsonObject.add(key, Document.GSON.toJsonTree(value));
+        jsonObject.add(key, Document.GSON.toJsonTree(value));
     }
+
     public Document(@NotNull final InputStream inputStream) throws IOException {
         this(IOUtils.toString(inputStream, StandardCharsets.UTF_8));
     }
@@ -49,75 +49,84 @@ public class Document {
         this.jsonObject = jsonElement.getAsJsonObject();
     }
 
-    public Document clear(){
+    public Document clear() {
         entrySet().forEach(stringJsonElementEntry -> remove(stringJsonElementEntry.getKey()));
 
         return this;
     }
 
     public <T> T getObject(@NotNull final String key, @NotNull final Class<T> classOfT) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
 
-        return Document.GSON.fromJson(this.jsonObject.get(key).getAsString(), classOfT);
+        return Document.GSON.fromJson(pair.getJsonObject().get(pair.getPath()).getAsString(), classOfT);
     }
 
     public <T> T getObject(@NotNull final String key, @NotNull final Type type) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
 
-        return Document.GSON.fromJson(this.jsonObject.get(key).getAsString(), type);
+        return Document.GSON.fromJson(pair.getJsonObject().get(pair.getPath()).getAsString(), type);
     }
 
     public Boolean getBoolean(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return this.jsonObject.get(key).getAsBoolean();
+        return pair.getJsonObject().get(pair.getPath()).getAsBoolean();
     }
 
     public Double getDouble(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return this.jsonObject.get(key).getAsDouble();
+        return pair.getJsonObject().get(pair.getPath()).getAsDouble();
     }
 
     public Float getFloat(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return this.jsonObject.get(key).getAsFloat();
+        return pair.getJsonObject().get(pair.getPath()).getAsFloat();
     }
 
     public Integer getInt(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return this.jsonObject.get(key).getAsInt();
+        return pair.getJsonObject().get(pair.getPath()).getAsInt();
     }
 
     public Long getLong(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return this.jsonObject.get(key).getAsLong();
+        return pair.getJsonObject().get(pair.getPath()).getAsLong();
     }
 
     public Byte getByte(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return this.jsonObject.get(key).getAsByte();
+        return pair.getJsonObject().get(pair.getPath()).getAsByte();
     }
 
     public DocumentArray getDocumentArray(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return new DocumentArray(this.jsonObject.get(key).getAsJsonArray());
+        return new DocumentArray(pair.getJsonObject().get(pair.getPath()).getAsJsonArray());
     }
 
     public DocumentArray getDocumentArray(@NotNull final String key, final DocumentArray defaultValue) {
@@ -127,38 +136,43 @@ public class Document {
     }
 
     public JsonArray getJsonArray(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return this.jsonObject.get(key).getAsJsonArray();
+        return pair.getJsonObject().get(pair.getPath()).getAsJsonArray();
     }
 
     public JsonNull getJsonNull(@NotNull final String key) {
-        if (!this.jsonObject.has(key)) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath())) {
             return null;
         }
-        return this.jsonObject.get(key).getAsJsonNull();
+        return pair.getJsonObject().get(pair.getPath()).getAsJsonNull();
     }
 
     public JsonPrimitive getJsonPrimitive(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return this.jsonObject.get(key).getAsJsonPrimitive();
+        return pair.getJsonObject().get(pair.getPath()).getAsJsonPrimitive();
     }
 
     public String getString(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return this.jsonObject.get(key).getAsString();
+        return pair.getJsonObject().get(pair.getPath()).getAsString();
     }
 
     public Document getDocument(@NotNull final String key) {
-        if (!this.jsonObject.has(key) || this.jsonObject.get(key).isJsonNull()) {
+        Path pair = checkJsonObject(key);
+        if (!pair.getJsonObject().has(pair.getPath()) || pair.getJsonObject().get(pair.getPath()).isJsonNull()) {
             return null;
         }
-        return new Document(this.jsonObject.get(key).getAsJsonObject());
+        return new Document(pair.getJsonObject().get(pair.getPath()).getAsJsonObject());
     }
 
     public Boolean getBoolean(@NotNull final String key, final Boolean defaultValue) {
@@ -217,7 +231,8 @@ public class Document {
     }
 
     public Document remove(@NotNull final String key) {
-        this.jsonObject.remove(key);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().remove(pair.getPath());
         return this;
     }
 
@@ -229,7 +244,8 @@ public class Document {
         if (this.has(key)) {
             return this;
         }
-        this.jsonObject.add(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().add(pair.getPath(), value);
         return this;
     }
 
@@ -237,7 +253,8 @@ public class Document {
         if (this.has(key)) {
             return this;
         }
-        this.jsonObject.add(key, Document.GSON.toJsonTree(value));
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().add(pair.getPath(), Document.GSON.toJsonTree(value));
         return this;
     }
 
@@ -245,7 +262,8 @@ public class Document {
         if (this.has(key)) {
             return this;
         }
-        this.jsonObject.addProperty(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().addProperty(pair.getPath(), value);
         return this;
     }
 
@@ -254,7 +272,8 @@ public class Document {
             return this;
         }
 
-        this.jsonObject.add(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().add(pair.getPath(), value);
         return this;
     }
 
@@ -262,7 +281,8 @@ public class Document {
         if (this.has(key)) {
             return this;
         }
-        this.jsonObject.addProperty(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().addProperty(pair.getPath(), value);
         return this;
     }
 
@@ -270,7 +290,8 @@ public class Document {
         if (this.has(key)) {
             return this;
         }
-        this.jsonObject.add(key, value.getJsonObject());
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().add(pair.getPath(), value.getJsonObject());
         return this;
     }
 
@@ -278,7 +299,8 @@ public class Document {
         if (this.has(key)) {
             return this;
         }
-        this.jsonObject.addProperty(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().addProperty(pair.getPath(), value);
         return this;
     }
 
@@ -286,7 +308,8 @@ public class Document {
         if (this.has(key)) {
             return this;
         }
-        this.jsonObject.add(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().add(pair.getPath(), value);
         return this;
     }
 
@@ -295,48 +318,78 @@ public class Document {
     }
 
     public Document set(@NotNull final String key, final JsonElement value) {
-        this.jsonObject.add(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().add(pair.getPath(), value);
         return this;
     }
 
     public Document set(@NotNull final String key, final Object value) {
-        this.jsonObject.addProperty(key, Document.GSON.toJson(value));
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().addProperty(pair.getPath(), Document.GSON.toJson(value));
         return this;
     }
 
     public Document set(@NotNull final String key, final JsonArray value) {
-        this.jsonObject.add(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().add(pair.getPath(), value);
         return this;
     }
 
     public Document set(@NotNull final String key, final String value) {
-        this.jsonObject.addProperty(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().addProperty(pair.getPath(), value);
         return this;
     }
 
     public Document set(@NotNull final String key, final JsonObject value) {
-        this.jsonObject.add(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().add(pair.getPath(), value);
         return this;
     }
 
     public Document set(@NotNull final String key, final Number value) {
-        this.jsonObject.addProperty(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().addProperty(pair.getPath(), value);
         return this;
     }
 
     public Document set(@NotNull final String key, final Document value) {
-        this.jsonObject.add(key, value.getJsonObject());
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().add(pair.getPath(), value.getJsonObject());
         return this;
     }
 
     public Document set(@NotNull final String key, final Boolean value) {
-        this.jsonObject.addProperty(key, value);
+        Path pair = checkJsonObject(key);
+        pair.getJsonObject().addProperty(pair.getPath(), value);
         return this;
+    }
+
+    private Path checkJsonObject(@NotNull String key) {
+        JsonObject output = jsonObject;
+        String outputPath = key;
+
+        if (key.contains(".")) {
+            key = key.substring(0, key.lastIndexOf("."));
+
+            for (String s : key.split("\\.")) {
+                JsonElement jsonElement = output.get(s);
+
+                if (jsonElement == null || !jsonElement.isJsonObject()) {
+                    break;
+                }
+
+                output = jsonElement.getAsJsonObject();
+                outputPath = outputPath.substring(outputPath.indexOf(".") + 1);
+            }
+        }
+
+        return new Path(output, outputPath);
     }
 
     @Override
     public String toString() {
-        return this.jsonObject.toString();
+        return jsonObject.toString();
     }
 
     public String toFormattedString() {
@@ -344,15 +397,16 @@ public class Document {
     }
 
     public Set<Map.Entry<String, JsonElement>> entrySet() {
-        return this.jsonObject.entrySet();
+        return jsonObject.entrySet();
     }
 
     public Set<String> keySet() {
-        return this.jsonObject.keySet();
+        return jsonObject.keySet();
     }
 
     public boolean has(@NotNull final String key) {
-        return this.jsonObject.has(key);
+        Path pair = checkJsonObject(key);
+        return pair.getJsonObject().has(pair.getPath());
     }
 
     public boolean contains(@NotNull final String key) {
@@ -365,5 +419,23 @@ public class Document {
 
     protected void setJsonObject(final JsonObject jsonObject) {
         this.jsonObject = jsonObject;
+    }
+
+    private static class Path {
+        private final JsonObject jsonObject;
+        private final String path;
+
+        protected Path(JsonObject jsonObject, String path) {
+            this.jsonObject = jsonObject;
+            this.path = path;
+        }
+
+        public JsonObject getJsonObject() {
+            return jsonObject;
+        }
+
+        public String getPath() {
+            return path;
+        }
     }
 }
