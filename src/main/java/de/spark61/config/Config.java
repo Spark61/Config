@@ -159,7 +159,7 @@ public class Config extends Document {
     }
 
     @Override
-    public Document set(@NotNull final String key, final DocumentArray value) {
+    public Config set(@NotNull final String key, final DocumentArray value) {
         super.set(key, value);
         return this;
     }
@@ -213,7 +213,7 @@ public class Config extends Document {
     }
 
     @Override
-    public Document add(@NotNull final String key, final DocumentArray value) {
+    public Config add(@NotNull final String key, final DocumentArray value) {
         super.add(key, value);
         return this;
     }
