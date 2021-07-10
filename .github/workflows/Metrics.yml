@@ -17,7 +17,8 @@ jobs:
 
           # Options
           user: Spark61
-          template: classic
+          repo: Config
+          template: repository
           base: ""
           config_timezone: Europe/Berlin
           plugin_licenses: yes
