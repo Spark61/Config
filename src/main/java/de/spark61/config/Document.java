@@ -61,7 +61,7 @@ public class Document {
             return null;
         }
 
-        return Document.GSON.fromJson(pair.getJsonObject().get(pair.getPath()).getAsString(), classOfT);
+        return Document.GSON.fromJson(pair.getJsonObject().get(pair.getPath()), classOfT);
     }
 
     public <T> T getObject(@NotNull final String key, @NotNull final Type type) {
@@ -70,7 +70,7 @@ public class Document {
             return null;
         }
 
-        return Document.GSON.fromJson(pair.getJsonObject().get(pair.getPath()).getAsString(), type);
+        return Document.GSON.fromJson(pair.getJsonObject().get(pair.getPath()), type);
     }
 
     public Boolean getBoolean(@NotNull final String key) {
@@ -325,7 +325,7 @@ public class Document {
 
     public Document set(@NotNull final String key, final Object value) {
         Path pair = checkJsonObject(key);
-        pair.getJsonObject().addProperty(pair.getPath(), Document.GSON.toJson(value));
+        pair.getJsonObject().add(pair.getPath(), Document.GSON.toJsonTree(value));
         return this;
     }
 

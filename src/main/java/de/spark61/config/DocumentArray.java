@@ -34,7 +34,7 @@ public class DocumentArray implements Iterable<JsonElement> {
     public DocumentArray(@NotNull final List<Object> list) {
         this.jsonArray = new JsonArray();
 
-        list.forEach(o -> this.add(Document.GSON.toJson(o)));
+        list.forEach(o -> this.add(Document.GSON.toJsonTree(o)));
     }
 
     public DocumentArray(@NotNull final String jsonArrayString) {
@@ -95,7 +95,7 @@ public class DocumentArray implements Iterable<JsonElement> {
     }
 
     public DocumentArray addAll(@NotNull final List<Object> value) {
-        value.forEach(o -> this.add(Document.GSON.toJson(o)));
+        value.forEach(o -> this.add(Document.GSON.toJsonTree(o)));
         return this;
     }
 
