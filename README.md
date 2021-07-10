@@ -19,3 +19,6 @@ config.save();
 //reload file content
 config.reload();
 ```
+---
+
+<img src="https://raw.githubusercontent.com/Spark61/Config/main/github-metrics.svg">
