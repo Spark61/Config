@@ -1,14 +1,11 @@
-apply plugin: 'java'
-apply plugin: 'maven-publish'
-
-configurations {
-    providedRuntime
+plugins {
+    id 'java'
+    id 'maven-publish'
 }
 
+group = 'de.spark61'
+version = '1.0.7'
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
 
 repositories {
     mavenCentral();
@@ -21,8 +18,9 @@ dependencies {
     implementation('commons-io:commons-io:2.7')
 }
 
-group = 'de.spark61'
-version = '1.0.7'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
 jar {
     enabled = true
