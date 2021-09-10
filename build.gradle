@@ -1,26 +1,28 @@
-plugins {
-    id 'java'
-    id 'maven-publish'
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+configurations {
+    providedRuntime
 }
 
-group = 'de.spark61'
-version = '1.0.7'
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
 repositories {
     mavenCentral();
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:19.0.0'
-    implementation('com.google.code.gson:gson:2.8.6')
+    implementation 'org.jetbrains:annotations:22.0.0'
+    implementation('com.google.code.gson:gson:2.8.8')
     implementation group: 'com.google.guava', name: 'guava', version: '29.0-jre'
     implementation('commons-io:commons-io:2.7')
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
+group = 'de.spark61'
+version = '1.0.8'
 
 jar {
     enabled = true
