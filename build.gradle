@@ -22,7 +22,7 @@ dependencies {
 }
 
 group = 'de.spark61'
-version = '1.0.8'
+version = '1.0.9'
 
 jar {
     enabled = true
