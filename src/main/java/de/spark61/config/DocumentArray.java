@@ -45,6 +45,10 @@ public class DocumentArray implements Iterable<JsonElement> {
         this.jsonArray = new JsonArray();
     }
 
+    public boolean isEmpty(){
+        return size() == 0;
+    }
+
     public JsonElement get(final int i) {
         return this.jsonArray.get(i);
     }

@@ -38,7 +38,17 @@ public class Document {
 
     public Document(@NotNull final String key, final Object value) {
         this.jsonObject = new JsonObject();
-        jsonObject.add(key, Document.GSON.toJsonTree(value));
+        set(key, value);
+    }
+
+    public Document(@NotNull final String key, final Document value) {
+        this.jsonObject = new JsonObject();
+        set(key, value);
+    }
+
+    public Document(@NotNull final String key, final DocumentArray value) {
+        this.jsonObject = new JsonObject();
+        set(key, value);
     }
 
     public Document(@NotNull final InputStream inputStream) throws IOException {
@@ -407,6 +417,10 @@ public class Document {
     public boolean has(@NotNull final String key) {
         Path pair = checkJsonObject(key);
         return pair.getJsonObject().has(pair.getPath());
+    }
+
+    public boolean isEmpty(){
+        return this.keySet().isEmpty();
     }
 
     public boolean contains(@NotNull final String key) {
